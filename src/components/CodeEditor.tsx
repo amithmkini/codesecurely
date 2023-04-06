@@ -23,6 +23,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ text, setText }) => {
   const [instructions, setInstructions] = useState("Complete the function");
   const [temperature, setTemperature] = useState('0.7');
   const [topP, setTopP] = useState('1');
+  const [loading, setLoading] = useState(false);
 
   const editorRef = useRef<AceEditor>(null);
 
@@ -30,7 +31,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ text, setText }) => {
     setInstructions(instructions);
   };
 
-  function handleCompleteMe() {
+  async function handleCompleteMe() {
+    setLoading(true);
     const currentTemp = parseFloat(temperature) || 0.7;
     const currentTopP = parseFloat(topP) || 1;
     fetch("/api/complete", {
@@ -51,6 +53,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ text, setText }) => {
         if (data.status !== 200) {
           console.error(data.code);
           toast.error(data.code);
+          setLoading(false);
           return;
         }
         setText(data.code);
@@ -58,7 +61,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ text, setText }) => {
           editorRef.current.editor.setValue(data.code);
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -68,7 +74,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ text, setText }) => {
   return (
     <div className="w-1/2 flex-grow">
       <div className="flex justify-between pb-4">
-        <Button label="Complete me!" onClick={handleCompleteMe} />
+        <Button label="Complete me!" onClick={handleCompleteMe} loading={loading} />
         <DecimalInput label="Temperature" value={temperature} onValueChange={setTemperature} />
         <DecimalInput label="Top P" value={topP} onValueChange={setTopP} />
       </div>

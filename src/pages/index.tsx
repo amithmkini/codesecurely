@@ -19,9 +19,7 @@ const Home: NextPage = () => {
   async function readStarterCode() {
     const response = await fetch("/api/starterCode");
     const data = await response.json();
-    console.log(data);
     setText(data.code);
-    console.log("Set text");
   }
 
   useEffect(() => {
