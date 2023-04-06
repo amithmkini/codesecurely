@@ -7,6 +7,9 @@ export default async function handler(
 ) {
   const input = req.body.code;
   const instruction = req.body.instruction;
+  const temperature = req.body.temperature || 0.7;
+  const top_p = req.body.top_p || 1;
+
   if (!input || !instruction) {
     res.status(400).json({
       status: 400,
@@ -24,13 +27,13 @@ export default async function handler(
     model: "code-davinci-edit-001",
     input: input,
     instruction: instruction,
-    temperature: 0.7,
-    top_p: 1,
+    temperature: temperature,
+    top_p: top_p,
   });
 
   if (response.status !== 200) {
-    res.status(500).json({
-      status: 500,
+    res.status(400).json({
+      status: 400,
       code: "Error: Contact the developer",
     });
   } else {
