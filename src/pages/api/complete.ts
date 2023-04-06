@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { Configuration, OpenAIApi } from 'openai';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { Configuration, OpenAIApi } from "openai";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default async function handler(
   if (!input || !instruction) {
     res.status(400).json({
       status: 400,
-      code: "Can't have Code or Instruction empty"
+      code: "Can't have Code or Instruction empty",
     });
     return;
   }
@@ -25,18 +25,18 @@ export default async function handler(
     input: input,
     instruction: instruction,
     temperature: 0.7,
-    top_p: 1
+    top_p: 1,
   });
 
   if (response.status !== 200) {
     res.status(500).json({
       status: 500,
-      code: "Error: Contact the developer"
+      code: "Error: Contact the developer",
     });
   } else {
     res.status(200).json({
       status: 200,
-      code: response.data.choices[0].text
+      code: response.data.choices[0].text,
     });
   }
 }

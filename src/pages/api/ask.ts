@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { Configuration, OpenAIApi } from 'openai';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { Configuration, OpenAIApi } from "openai";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,7 +10,7 @@ export default async function handler(
   if (!code || !question) {
     res.status(400).json({
       status: 400,
-      answer: "Can't ask question without code or question"
+      answer: "Can't ask question without code or question",
     });
     return;
   }
@@ -19,25 +19,25 @@ export default async function handler(
     apiKey: process.env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
-  
+
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
-      {role: "system", content: String(process.env.OPENAI_SYSTEM_PROMPT)},
-      {role: "user", content: String(process.env.OPENAI_FIRST_USER_PROMPT)},
-      {role: "user", content: question + "```" + code + "```"}
-    ]
+      { role: "system", content: String(process.env.OPENAI_SYSTEM_PROMPT) },
+      { role: "user", content: String(process.env.OPENAI_FIRST_USER_PROMPT) },
+      { role: "user", content: question + "```" + code + "```" },
+    ],
   });
 
   if (completion.status !== 200) {
     res.status(500).json({
       status: 500,
-      answer: "Error: Contact the developer"
+      answer: "Error: Contact the developer",
     });
   } else {
     res.status(200).json({
       status: 200,
-      answer: completion.data.choices[0].message
+      answer: completion.data.choices[0].message,
     });
   }
 }

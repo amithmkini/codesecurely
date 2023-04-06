@@ -6,9 +6,11 @@ type ButtonProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({ label, onClick }) => {
-
   return (
-    <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" onClick={onClick}>
+    <button
+      className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+      onClick={onClick}
+    >
       {label}
     </button>
   );

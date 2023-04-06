@@ -1,0 +1,22 @@
+// Node of the singly linked list
+typedef struct _node {
+    char* item_name;
+    float price;
+    int quantity;
+    struct _node *next;
+} node;
+
+// print a single list item to an externally allocated string
+// This should be in the format of:
+// "quantity * item_name @ $price ea", where item_name is a string and 
+// price is a float formatted with 2 decimal places.
+int list_item_to_string(node *head, char *str) {
+    if (head == NULL || str == NULL) {
+        return EXIT_FAILURE;
+    }
+    int n = snprintf(str, MAX_ITEM_PRINT_LEN, "%d * %s @ $%.2f ea", head->quantity, head->item_name, head->price);
+    if (n < 0 || n >= MAX_ITEM_PRINT_LEN) {
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
+}

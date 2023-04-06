@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 type InstructionsProps = {
   label: string;
@@ -7,17 +7,24 @@ type InstructionsProps = {
   onSubmit?: () => void;
 };
 
-const Instructions: React.FC<InstructionsProps> = ({ label, content, onInstructionsChange, onSubmit }) => {
+const Instructions: React.FC<InstructionsProps> = ({
+  label,
+  content,
+  onInstructionsChange,
+  onSubmit,
+}) => {
   const [instructions, setInstructions] = useState(content);
 
-  const handleInstructionsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInstructionsChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const newInstructions = event.target.value;
     setInstructions(newInstructions);
     onInstructionsChange(newInstructions);
   };
 
   return (
-    <div className="mt-4 flex flex-col relative">
+    <div className="relative mt-4 flex flex-col">
       <label htmlFor="instructions" className="block font-medium text-gray-700">
         {label}
       </label>
@@ -25,13 +32,13 @@ const Instructions: React.FC<InstructionsProps> = ({ label, content, onInstructi
         id="instructions"
         name="instructions"
         rows={4}
-        className="resize-none form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 p-2"
+        className="form-textarea mt-1 block w-full resize-none rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
         value={instructions}
         onChange={handleInstructionsChange}
       />
       {onSubmit && (
         <button
-          className="m-2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
+          className="my-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
           onClick={onSubmit}
         >
           Ask
