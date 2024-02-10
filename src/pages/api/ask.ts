@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,12 +15,12 @@ export default async function handler(
     return;
   }
 
-  const configuration = new Configuration({
+  const config = {
     apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
+  };
+  const openai = new OpenAI(config);
 
-  const completion = await openai.createChatCompletion({
+  const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
       { role: "system", content: String(process.env.OPENAI_SYSTEM_PROMPT) },
@@ -29,15 +29,8 @@ export default async function handler(
     ],
   });
 
-  if (completion.status !== 200) {
-    res.status(500).json({
-      status: 500,
-      answer: "Error: Contact the developer",
-    });
-  } else {
-    res.status(200).json({
-      status: 200,
-      answer: completion.data.choices[0].message,
-    });
-  }
+  res.status(200).json({
+    status: 200,
+    answer: completion.choices[0].message.content,
+  });
 }
